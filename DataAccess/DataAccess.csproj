@@ -39,6 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccessFacade.cs" />
+    <Compile Include="DataAccessFacadeStub.cs" />
+    <Compile Include="Entities\ArtistEntity.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Helpers\StoredProcedures.cs" />
+    <Compile Include="IDataAccessFacade.cs" />
+    <Compile Include="Mappers\ArtistMapper.cs" />
+    <Compile Include="Mappers\ASqlMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -47,11 +55,7 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Mappers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
