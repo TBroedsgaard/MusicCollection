@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using Common.Interfaces;
+using DataAccess;
 using Domain.Model;
 using System.Collections.Generic;
 namespace Domain.Collections
@@ -12,7 +13,7 @@ namespace Domain.Collections
         {
             this.dataAccessFacade = dataAccessFacade;
 
-            artists = new List<Artist>();
+            ReadAll();
         }
 
         internal Artist Create(string artistName)
@@ -21,6 +22,33 @@ namespace Domain.Collections
             artists.Add(artist);
 
             return artist;
+        }
+
+        internal List<Artist> ReadAll()
+        {
+            if (artists == null)
+            {
+                artists = new List<Artist>();
+                List<IArtist> artistEntities = dataAccessFacade.ReadAllArtists();
+
+                foreach (IArtist artistEntity in artistEntities)
+                {
+                    Artist artist = new Artist(artistEntity);
+                    artists.Add(artist);
+                }
+            }
+
+            return artists;
+        }
+
+        internal void Update(Artist artist)
+        {
+            artist.Update(dataAccessFacade);
+        }
+
+        internal void Delete(Artist artist)
+        {
+            artist.Delete(dataAccessFacade);
         }
     }
 }

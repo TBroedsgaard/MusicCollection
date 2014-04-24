@@ -1,5 +1,7 @@
-﻿using Domain.Controllers;
+﻿using Common.Interfaces;
+using Domain.Controllers;
 using System;
+using System.Collections.Generic;
 
 namespace MusicCollection
 {
@@ -36,6 +38,16 @@ namespace MusicCollection
             }
 
             //updateCollectionHandler.AddArtist("John Lennon");
+            List<IArtist> artists = updateCollectionHandler.ReadAllArtists();
+
+            foreach (IArtist artist in artists)
+            {
+                Console.WriteLine(artist.ArtistName);
+            }
+
+            //updateCollectionHandler.DeleteArtist(artists[0]);
+            artists[0].ArtistName = "Michael Jackson";
+            updateCollectionHandler.UpdateArtist(artists[0]);
         }
     }
 }

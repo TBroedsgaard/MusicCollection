@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Helpers
 {
-    internal class StoredProcedures
+    internal static class StoredProcedures
     {
         internal const string INSERT_ARTIST = "InsertArtist";
         internal const string SELECT_ALL_ARTISTS = "SelectAllArtists";

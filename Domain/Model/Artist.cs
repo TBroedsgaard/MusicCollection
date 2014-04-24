@@ -22,7 +22,22 @@ namespace Domain.Model
 
             ArtistName = artistName;
 
+            Update(dataAccessFacade);
+        }
+
+        internal Artist(IArtist artistEntity)
+        {
+            _artistEntity = artistEntity;
+        }
+
+        internal void Update(IDataAccessFacade dataAccessFacade)
+        {
             dataAccessFacade.UpdateArtist(_artistEntity);
+        }
+
+        internal void Delete(IDataAccessFacade dataAccessFacade)
+        {
+            dataAccessFacade.DeleteArtist(_artistEntity);
         }
 
         private void validateName(string name)
