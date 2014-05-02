@@ -4,7 +4,7 @@ namespace DataAccess
 {
     public interface IDataAccessFacade
     {
-        IArtist CreateArtist();
+        IArtist CreateArtist(string artistName);
         List<IArtist> ReadAllArtists();
         void UpdateArtist(IArtist artist);
         void DeleteArtist(IArtist artist);

@@ -28,9 +28,9 @@ namespace DataAccess.Mappers
             get { return StoredProcedures.UPDATE_ARTIST; }
         }
 
-        public ArtistEntity Create()
+        public ArtistEntity Create(string artistName)
         {
-            ArtistEntity artist = new ArtistEntity("", 0, DateTime.MinValue, false);
+            ArtistEntity artist = new ArtistEntity(artistName, 0, DateTime.MinValue, false);
 
             insert(artist);
 

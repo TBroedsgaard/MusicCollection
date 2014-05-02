@@ -18,9 +18,9 @@ namespace DataAccess
             artistMapper = new ArtistMapper(connectionString);
         }
 
-        public IArtist CreateArtist()
+        public IArtist CreateArtist(string artistName)
         {
-            return artistMapper.Create();
+            return artistMapper.Create(artistName);
         }
 
         public List<IArtist> ReadAllArtists()

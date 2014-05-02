@@ -11,14 +11,18 @@ namespace Domain.Model
         public string ArtistName 
         {
             get { return _artistEntity.ArtistName; }
-            set { _artistEntity.ArtistName = value; }
+            set 
+            {
+                validateArtistName(value);
+                _artistEntity.ArtistName = value; 
+            }
         }
 
         internal Artist(string artistName, IDataAccessFacade dataAccessFacade)
         {
-            validateName(artistName);
+            validateArtistName(artistName);
 
-            _artistEntity = dataAccessFacade.CreateArtist();
+            _artistEntity = dataAccessFacade.CreateArtist(artistName);
 
             ArtistName = artistName;
 
@@ -40,10 +44,10 @@ namespace Domain.Model
             dataAccessFacade.DeleteArtist(_artistEntity);
         }
 
-        private void validateName(string name)
+        private void validateArtistName(string artistName)
         {
             string paramName = "ArtistName";
-            if (name.Equals(""))
+            if (artistName.Equals(""))
             {
                 throw new ArgumentOutOfRangeException(paramName, "Name may not be empty");
             }

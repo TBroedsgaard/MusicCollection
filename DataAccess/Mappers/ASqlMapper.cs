@@ -67,6 +67,12 @@ namespace DataAccess.Mappers
                             }
                             else
                             {
+                                // NOTE: This means data in cache is not overwritten!
+                                // Also means you can't discard changes!
+                                // Either provide the Mapper class with Flush(entity) and FlushAll()
+                                // metods, or provide a 'overwrite' bool to Read statements, which
+                                // if true will overwrite what is in cache, so that changes may
+                                // be discarded
                                 entity = entityMap[entity.Id];
                             }
 
