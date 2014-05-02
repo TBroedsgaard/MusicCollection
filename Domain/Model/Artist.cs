@@ -20,14 +20,14 @@ namespace Domain.Model
 
         public IReadOnlyList<string> Songs
         {
-            get { return _songs; }
+            get { return _artistEntity.Songs; }
         }
 
         public void AddSong(string song)
         {
             validateSong(song);
 
-            _songs.Add(song);
+            _artistEntity.AddSong(song);
         }
 
         internal IArtist _artistEntity; // Skulle helst være privat, men det kan være nødvendigt at den er internal
@@ -36,11 +36,6 @@ namespace Domain.Model
         {
             _artistEntity = artistEntity;
 
-            _songs = new List<string>();
-            foreach (string song in Songs)
-            {
-                _songs.Add(song);
-            }
 
             this.dataAccessFacade = dataAccessFacade;
         }
@@ -50,8 +45,6 @@ namespace Domain.Model
             validateArtistName(artistName);
 
             _artistEntity = dataAccessFacade.CreateArtist(artistName);
-            _songs = new List<string>();
-
         }
 
         internal static List<Artist> ReadAll(IDataAccessFacade dataAccessFacade)
@@ -79,7 +72,6 @@ namespace Domain.Model
         }
 
         private IDataAccessFacade dataAccessFacade;
-        private List<string> _songs;
 
         private void validateArtistName(string artistName)
         {
