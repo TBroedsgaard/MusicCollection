@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Common.Interfaces;
 using DataAccess;
@@ -7,7 +8,6 @@ namespace Domain.Model
 {
     internal class Artist : IArtist
     {
-        private IArtist _artistEntity;
         public string ArtistName 
         {
             get { return _artistEntity.ArtistName; }
@@ -18,31 +18,68 @@ namespace Domain.Model
             }
         }
 
+        public IReadOnlyList<string> Songs
+        {
+            get { return _songs; }
+        }
+
+        public void AddSong(string song)
+        {
+            validateSong(song);
+
+            _songs.Add(song);
+        }
+
+        internal IArtist _artistEntity; // Skulle helst være privat, men det kan være nødvendigt at den er internal
+
+        internal Artist(IArtist artistEntity, IDataAccessFacade dataAccessFacade)
+        {
+            _artistEntity = artistEntity;
+
+            _songs = new List<string>();
+            foreach (string song in Songs)
+            {
+                _songs.Add(song);
+            }
+
+            this.dataAccessFacade = dataAccessFacade;
+        }
+
         internal Artist(string artistName, IDataAccessFacade dataAccessFacade)
         {
             validateArtistName(artistName);
 
             _artistEntity = dataAccessFacade.CreateArtist(artistName);
+            _songs = new List<string>();
 
-            ArtistName = artistName;
-
-            Update(dataAccessFacade);
         }
 
-        internal Artist(IArtist artistEntity)
+        internal static List<Artist> ReadAll(IDataAccessFacade dataAccessFacade)
         {
-            _artistEntity = artistEntity;
+            List<Artist> artists = new List<Artist>();
+            List<IArtist> entities = dataAccessFacade.ReadAllArtists();
+
+            foreach (IArtist entity in entities)
+            {
+                Artist artist = new Artist(entity, dataAccessFacade);
+                artists.Add(artist);
+            }
+
+            return artists;
         }
 
-        internal void Update(IDataAccessFacade dataAccessFacade)
+        internal void Update()
         {
             dataAccessFacade.UpdateArtist(_artistEntity);
         }
 
-        internal void Delete(IDataAccessFacade dataAccessFacade)
+        internal void Delete()
         {
             dataAccessFacade.DeleteArtist(_artistEntity);
         }
+
+        private IDataAccessFacade dataAccessFacade;
+        private List<string> _songs;
 
         private void validateArtistName(string artistName)
         {
@@ -51,6 +88,11 @@ namespace Domain.Model
             {
                 throw new ArgumentOutOfRangeException(paramName, "Name may not be empty");
             }
+        }
+
+        private void validateSong(string song)
+        {
+            // test if song is valid, if not throw exception
         }
     }
 }

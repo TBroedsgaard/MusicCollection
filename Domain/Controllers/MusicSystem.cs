@@ -5,12 +5,12 @@ using Domain.Model;
 using System.Collections.Generic;
 namespace Domain.Controllers
 {
-    public class UpdateCollectionHandler
+    public class MusicSystem
     {
         IDataAccessFacade dataAccessFacade;
         ArtistCollection artistCollection;
 
-        public UpdateCollectionHandler()
+        public MusicSystem()
         {
             dataAccessFacade = new DataAccessFacade();
 

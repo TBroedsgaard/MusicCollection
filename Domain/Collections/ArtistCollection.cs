@@ -28,14 +28,7 @@ namespace Domain.Collections
         {
             if (artists == null)
             {
-                artists = new List<Artist>();
-                List<IArtist> artistEntities = dataAccessFacade.ReadAllArtists();
-
-                foreach (IArtist artistEntity in artistEntities)
-                {
-                    Artist artist = new Artist(artistEntity);
-                    artists.Add(artist);
-                }
+                artists = Artist.ReadAll(dataAccessFacade);
             }
 
             return artists;
@@ -43,12 +36,12 @@ namespace Domain.Collections
 
         internal void Update(Artist artist)
         {
-            artist.Update(dataAccessFacade);
+            artist.Update();
         }
 
         internal void Delete(Artist artist)
         {
-            artist.Delete(dataAccessFacade);
+            artist.Delete();
         }
     }
 }
