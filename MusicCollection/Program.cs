@@ -18,11 +18,11 @@ namespace MusicCollection
 
     class Tester
     {
-        private MusicSystem updateCollectionHandler;
+        private MusicSystem musicSystem;
 
         public Tester()
         {
-            updateCollectionHandler = new MusicSystem();
+            musicSystem = new MusicSystem();
         
         }
         public void Run()
@@ -30,7 +30,7 @@ namespace MusicCollection
             // Test that validation throws exception, that can be caught by User Interface
             try
             {
-                updateCollectionHandler.AddArtist("");
+                musicSystem.AddArtist("");
             }
             catch (Exception ex)
             {
@@ -38,8 +38,8 @@ namespace MusicCollection
                 Console.WriteLine(ex.StackTrace);
             }
 
-            updateCollectionHandler.AddArtist("John Lennon");
-            List<IArtist> artists = updateCollectionHandler.ReadAllArtists();
+            musicSystem.AddArtist("John Lennon");
+            List<IArtist> artists = musicSystem.ReadAllArtists();
 
             foreach (IArtist artist in artists)
             {
@@ -56,7 +56,7 @@ namespace MusicCollection
             {
                 Console.WriteLine(song);
             }
-            updateCollectionHandler.UpdateArtist(artists[0]);
+            musicSystem.UpdateArtist(artists[0]);
         }
     }
 }
