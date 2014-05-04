@@ -20,6 +20,15 @@ namespace DataAccess.Mappers
         protected abstract void addUpdateParameters(TEntity entity,
             SqlParameterCollection parameters);
 
+        /// <summary>
+        /// Prepares a connection to database using connection string, creates a new StoredProcedure
+        /// command and adds parameters using the EntityMapper's implementation of 
+        /// addInsertParameters. Opens the connection and executes non-query command, and 
+        /// overwrites Id and LastModified fields of Entity with values set in output parameters.
+        /// </summary>
+        /// <param name="entity">The Entity to insert in the database</param>
+        /// <returns>The Entity that has been inserted with overwritten values of Id and 
+        /// LastModified</returns>
         protected TEntity insert(TEntity entity)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -43,6 +52,15 @@ namespace DataAccess.Mappers
             return entity;
         }
 
+        /// <summary>
+        /// Prepares a connection to database using connection string, creates a new StoredProcedure
+        /// command. Opens the connection and executes reader, and for each row in reader passes
+        /// data to entityFromReader to create new instances of Entity. Each new Entity is loaded
+        /// into the entityMap, and if the Entity is not deleted it is added to the list of entities
+        /// to return.
+        /// </summary>
+        /// <param name="entity">The Entity to insert in the database</param>
+        /// <returns>A list of all Entities that have not been deleted</returns>
         protected List<TEntity> selectAll()
         {
             List<TEntity> entities = new List<TEntity>();
@@ -88,6 +106,15 @@ namespace DataAccess.Mappers
             return entities;
         }
 
+        /// <summary>
+        /// Prepares a connection to database using connection string, creates a new StoredProcedure
+        /// command and adds parameters using the EntityMapper's implementation of 
+        /// addUpdateParameters. Opens the connection and executes non-query command, and 
+        /// overwrites LastModified field of Entity with value set in output parameter.
+        /// </summary>
+        /// <param name="entity">The Entity to update in the database</param>
+        /// <returns>The Entity that has been updated with overwritten value of LastModified
+        /// </returns>
         protected TEntity update(TEntity entity)
         {
             using (SqlConnection con = new SqlConnection(connectionString))

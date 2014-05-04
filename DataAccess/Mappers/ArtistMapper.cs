@@ -7,28 +7,24 @@ namespace DataAccess.Mappers
 {
     internal class ArtistMapper : ASqlMapper<ArtistEntity>
     {
+        /// <summary>
+        /// Instantiates a new ArtistMapper and initializes the connection string and entityMap
+        /// (inherited from ASqlMapper)
+        /// </summary>
+        /// <param name="connectionString">The connection string for the database</param>
         internal ArtistMapper(string connectionString)
         {
             this.connectionString = connectionString;
             this.entityMap = new Dictionary<int, ArtistEntity>();
         }
 
-        protected override string insertProcedureName
-        {
-            get { return StoredProcedures.INSERT_ARTIST; }
-        }
-
-        protected override string selectAllProcedureName
-        {
-            get { return StoredProcedures.SELECT_ALL_ARTISTS; }
-        }
-
-        protected override string updateProcedureName
-        {
-            get { return StoredProcedures.UPDATE_ARTIST; }
-        }
-
-        public ArtistEntity Create(string artistName)
+        /// <summary>
+        /// Creates a new ArtistEntity object with default Entity parameters, and inserts it into
+        /// the database
+        /// </summary>
+        /// <param name="artistName">Name of Artist</param>
+        /// <returns>ArtistEntity with Id and LastModified set by database</returns>
+        internal ArtistEntity Create(string artistName)
         {
             ArtistEntity artist = new ArtistEntity(artistName, 0, DateTime.MinValue, false);
 
@@ -37,7 +33,11 @@ namespace DataAccess.Mappers
             return artist;
         }
 
-        public List<ArtistEntity> ReadAll()
+        /// <summary>
+        /// Reads all ArtistEntities by selecting all from the database
+        /// </summary>
+        /// <returns>A list of all ArtistEntities in the database</returns>
+        internal List<ArtistEntity> ReadAll()
         {
             List<ArtistEntity> artists = selectAll();
 
@@ -46,19 +46,57 @@ namespace DataAccess.Mappers
             return artists;
         }
 
-        public void Update(ArtistEntity artist)
+        /// <summary>
+        /// Saves changes to specified ArtistEntity in the database
+        /// </summary>
+        /// <param name="artist">The AristEntity to update</param>
+        internal void Update(ArtistEntity artist)
         {
             update(artist);
             // also update other mappers!
         }
 
-        public void Delete(ArtistEntity artist)
+        /// <summary>
+        /// Sets artist.Deleted to true and updates the ArtistEntity in the database
+        /// </summary>
+        /// <param name="artist">The ArtistEntity to update</param>
+        internal void Delete(ArtistEntity artist)
         {
             artist.Deleted = true;
 
             Update(artist);
         }
 
+        /// <summary>
+        /// Name of Stored Procedure to insert ArtistEntities into database
+        /// </summary>
+        protected override string insertProcedureName
+        {
+            get { return StoredProcedures.INSERT_ARTIST; }
+        }
+
+        /// <summary>
+        /// Name of Stored Procedure to select all ArtistEntities into database
+        /// </summary>
+        protected override string selectAllProcedureName
+        {
+            get { return StoredProcedures.SELECT_ALL_ARTISTS; }
+        }
+
+        /// <summary>
+        /// Name of Stored Procedure to update ArtistEntities in database
+        /// </summary>
+        protected override string updateProcedureName
+        {
+            get { return StoredProcedures.UPDATE_ARTIST; }
+        }
+
+        /// <summary>
+        /// Creates a new ArtistEntity using the data in the SqlDataReader reader
+        /// </summary>
+        /// <param name="reader">A reader containing ArtistName, ArtistId, LastModified and Deleted
+        /// of an ArtistEntity</param>
+        /// <returns>The created ArtistEntity</returns>
         protected override ArtistEntity entityFromReader(SqlDataReader reader)
         {
             string artistName = (string)reader["ArtistName"];
@@ -69,6 +107,13 @@ namespace DataAccess.Mappers
             return new ArtistEntity(artistName, id, lastModified, deleted);
         }
 
+        /// <summary>
+        /// Takes an ArtistEntity and a SqlParameterCollection and adds SqlParameters for insert 
+        /// stored procedure to the SqlParameterCollection
+        /// </summary>
+        /// <param name="entity">The ArtistEntity to extract parameter data from</param>
+        /// <param name="parameters">The SqlParameterCollection to add the finished SqlParameters
+        /// to</param>
         protected override void addInsertParameters(ArtistEntity entity, SqlParameterCollection parameters)
         {
             SqlParameter parameter = new SqlParameter("@ArtistName", entity.ArtistName);
@@ -83,6 +128,13 @@ namespace DataAccess.Mappers
             parameters.Add(parameter);
         }
 
+        /// <summary>
+        /// Takes an ArtistEntity and a SqlParameterCollection and adds SqlParameters for update
+        /// stored procedure to the SqlParameterCollection
+        /// </summary>
+        /// <param name="entity">The ArtistEntity to extract parameter data from</param>
+        /// <param name="parameters">The SqlParameterCollection to add the finished SqlParameters
+        /// to</param>
         protected override void addUpdateParameters(ArtistEntity entity, SqlParameterCollection parameters)
         {
             SqlParameter parameter = new SqlParameter("@ArtistName", entity.ArtistName);
